@@ -140,6 +140,10 @@ mkdir -p ~/.config/kitty
 ln -s ~/dotfiles/templates/kitty.conf ~/.config/kitty/kitty.conf
 # Download icon: https://github.com/k0nserv/kitty-icon/raw/main/kitty.icns
 
+ansi --green "Setup ghostty..."
+mkdir -p ~/.config/ghostty
+ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
+
 ansi --green "Setup lazygit..."
 ln -s ~/dotfiles/templates/lazygit.yml ~/Library/Application\ Support/lazygit/config.yml
 
