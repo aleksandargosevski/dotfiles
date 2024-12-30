@@ -47,6 +47,7 @@ export PATH="$PATH:$HOME/.composer/vendor/bin" # add composer in path for global
 export PATH="$PATH:$HOME/.rvm/bin" # add RVM to PATH for scripting
 export PATH="$PATH:$HOME/.gocode/bin" # Add go scripts
 export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH #~/.tmux/plugins
+export PATH="$PATH:$HOME/.local/bin" # pipx
 
 # zsh autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
