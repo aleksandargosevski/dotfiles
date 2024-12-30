@@ -120,6 +120,7 @@ function kp () {
   ps | grep $PRC | fzf | cut -d" " -f 1 | xargs kill -9
 }
 
+alias gmai="git diff --staged | pbcopy && open raycast://ai-commands/git-commit-message"
 alias gd="git diff"
 alias gco="git checkout"
 alias ga="git add ."
