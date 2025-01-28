@@ -89,9 +89,9 @@ return {
 					mappings = { -- extend mappings
 						i = {
 							["<C-k>"] = lga_actions.quote_prompt(),
-							["<C-t>"] = lga_actions.quote_prompt({ postfix = " --type-add 'vue:*.vue' -t " }),
+							["<C-t>"] = lga_actions.quote_prompt({ postfix = " -t " }),
 							["<C-l>"] = lga_actions.quote_prompt({
-								postfix = " --type-add 'vue:*.vue' -g !package-lock.json",
+								postfix = " -g !package-lock.json",
 							}),
 							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --type-add 'vue:*.vue' --iglob " }),
 						},
