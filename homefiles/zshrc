@@ -41,6 +41,7 @@ export PAGER=bat
 
 # PATH
 export PATH="$PATH:$HOME/dotfiles/bin" # add local scripts to path
+export PATH="$PATH:$HOME/Google Drive/My Drive/dotprivate/bin" # add local scripts to path
 export PATH="$PATH:$HOME/Sites/awstools" # add local scripts to path
 export PATH="/usr/local/bin:$PATH" # local before everything else
 export PATH="$PATH:$HOME/.composer/vendor/bin" # add composer in path for global dependencies
