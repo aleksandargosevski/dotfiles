@@ -12,7 +12,7 @@ alias tkill="tmux kill-server"
 alias t='sesh connect $(sesh list | fzf)'
 
 # Nvim
-alias nvim="TERM='' nvim --listen /tmp/nvim-listener.pipe"
+alias nvim="TERM='' nvim"
 function v() {
   if [ -n "$1" ]; then
     nvim "$1"
