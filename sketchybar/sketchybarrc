@@ -1,11 +1,10 @@
 #!/bin/bash
-
 source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
 
 ITEM_DIR="$HOME/.config/sketchybar/items" # Directory where the items are configured
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin scripts are stored
 
-FONT="JetBrainsMono Nerd Font" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
+FONT="CaskaydiaCove Nerd Font"
 PADDINGS=3 # All paddings use this value (icon, label, background)
 
 # Setting up the general bar appearance of the bar
@@ -58,9 +57,8 @@ source $ITEM_DIR/front_app.sh
 source $ITEM_DIR/calendar.sh
 source $ITEM_DIR/battery.sh
 source $ITEM_DIR/volume.sh
-source $ITEM_DIR/mic.sh
 source $ITEM_DIR/weather.sh
-source $ITEM_DIR/media.sh
+source $ITEM_DIR/spotify.sh
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
