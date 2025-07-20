@@ -9,10 +9,6 @@ chmod +x ~/dotfiles/bin/*
 
 ansi --green "Installing home brew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew tap homebrew/core
-brew tap homebrew/cask
-brew tap homebrew/cask-versions
-brew tap homebrew/cask-fonts
 
 ansi --green "Brew install..."
 brew install bash
@@ -20,7 +16,7 @@ brew install git
 brew install joshmedeski/sesh/sesh
 brew install git-delta
 brew install fnm
-brew install lf
+brew install yazi
 brew install fd
 brew install tree
 brew install findutils
@@ -60,6 +56,7 @@ brew install pkill
 brew install zsh-eutosuggestions
 brew install zsh-syntax-highlighting
 brew install zsh-history-substring-search
+# brew install lf
 # brew install youtube-dl
 # brew install tig
 # brew install jesseduffield/lazydocker/lazydocker
@@ -85,19 +82,22 @@ brew install zsh-history-substring-search
 
 ansi --green "Installing apps using brew cask..."
 brew install --cask raycast
-brew install --cask kitty
+brew install --cask ghostty
 brew install --cask google-drive
-brew install --cask slack
+# brew install --cask discord
 brew install --cask arc
-brew install --cask cron
+brew install --cask cleanshot
+brew install --cask spotify
+brew install --cask notion-calendar
+brew install --cask monitorcontrol
+brew install --cask hammerspoon
+brew install --cask font-caskaydia-cove-nerd-font
+# brew install --cask slack
+# brew install --cask kitty
 # brew install --cask docker
 # brew install --cask sketch
 # brew install --cask parallels
-brew install --cask monitorcontrol
 # brew install --cask figma
-# brew install --cask discord
-brew install --cask hammerspoon
-brew install --cask font-jetbrains-mono-nerd-font
 # brew install --cask font-victor-mono
 # brew install --cask notion
 # brew install --cask viscosity
@@ -135,9 +135,9 @@ done
 ansi --green "Setup nvim..."
 ln -s ~/dotfiles/nvim/ ~/.config/
 
-ansi --green "Setup kitty..."
-mkdir -p ~/.config/kitty
-ln -s ~/dotfiles/templates/kitty.conf ~/.config/kitty/kitty.conf
+# ansi --green "Setup kitty..."
+# mkdir -p ~/.config/kitty
+# ln -s ~/dotfiles/templates/kitty.conf ~/.config/kitty/kitty.conf
 # Download icon: https://github.com/k0nserv/kitty-icon/raw/main/kitty.icns
 
 ansi --green "Setup ghostty..."
@@ -156,6 +156,7 @@ brew install sketchybar
 brew install font-hack-nerd-font
 curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v1.0.16/sketchybar-app-font.ttf -o $HOME/Library/Fonts/sketchybar-app-font.ttf
 ln -s ~/dotfiles/sketchybar ~/.config/sketchybar
+brew services start sketchybar
 
 ansi --gren "Setup bat theme"
 mkdir -p "$(bat --config-dir)/themes"
@@ -168,12 +169,6 @@ bat cache --build
 ansi --green "Git delta themes..."
 mkdir -p ~/.config/git-delta
 http --download https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig -o ~/.config/git-delta/themes.gitconfig
-
-ansi --green "Setup lf..."
-mkdir -p ~/.config/lf
-ln -s ~/dotfiles/lf/lfrc ~/.config/lf
-ln -s ~/dotfiles/lf/lf_kitty_preview ~/.config/lf
-ln -s ~/dotfiles/lf/lf_kitty_clean ~/.config/lf
 
 ansi --green "Setup starship prompt..."
 ln -s ~/dotfiles/templates/starship.toml ~/.config/starship.toml

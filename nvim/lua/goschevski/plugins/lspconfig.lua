@@ -2,10 +2,8 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
-		"pmizio/typescript-tools.nvim",
 	},
 	config = function()
-		local typescript = require("typescript-tools")
 		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -30,7 +28,7 @@ return {
 			-- end
 		end
 
-		local servers = { "html", "eslint", "gopls", "volar", "astro" }
+		local servers = { "astro", "ts_ls", "html", "eslint", "gopls", "vue_ls", "lua_ls", "vtsls" }
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		for _, lsp in pairs(servers) do
@@ -39,13 +37,6 @@ return {
 				on_attach = on_attach,
 			})
 		end
-
-		typescript.setup({
-			server = {
-				capabilities = capabilities,
-				on_attach = on_attach,
-			},
-		})
 
 		lspconfig["lua_ls"].setup({
 			capabilities = capabilities,

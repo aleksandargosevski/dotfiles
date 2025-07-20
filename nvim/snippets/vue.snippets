@@ -4,19 +4,17 @@ snippet comp "Vue 3 SFC with script setup"
 	</script>
 
 	<template>
-		${2:<h1>Hello world</h1>}
+
 	</template>
 
 	<style scoped>
-	$3
+
 	</style>
 
 snippet ss "Vue 3 script setup"
 	<script setup>
 		$1
 	</script>
-
-	$2
 
 snippet vp "Vue 3 props"
 	const props = defineProps({
@@ -33,14 +31,6 @@ snippet method "Vue 3 method"
 
 snippet vc "Vue 3 computed"
 	const $1 = computed(() => $2)
-
-snippet componentVue2 "Boilerplate code for vue component" b
-  <template>
-    $1
-  </template>
-
-  <script src="./`expand('%:t:r')`.js"></script>
-  <style src="./`expand('%:t:r')`.css" scoped></style>
 
 snippet cl "JavaScript console.log"
   console.log('---------------------------------------------------------- $1:', $1)

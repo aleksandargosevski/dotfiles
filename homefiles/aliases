@@ -63,7 +63,7 @@ alias a="cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Notes/Akord
 alias down="cd ~/Downloads"
 alias desk="cd ~/Desktop"
 alias drive="cd ~/My\ Drive"
-alias dotf="cd ~/dotfiles"
+alias dot="cd ~/dotfiles"
 
 # Folder sizes
 alias sizes="du -xhd1 | sort -n"

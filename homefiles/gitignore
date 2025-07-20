@@ -6,3 +6,8 @@ npm-debug.log
 .idea/
 .ignore
 packer_compiled.vim
+
+# Claude
+.claude
+.claude.json
+CLAUDE.md
