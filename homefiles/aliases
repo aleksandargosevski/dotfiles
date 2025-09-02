@@ -11,6 +11,15 @@ alias tkill="tmux kill-server"
 
 alias t='sesh connect $(sesh list | fzf)'
 
+# gif from video
+function gif () {
+  # extract file name from provided path
+  filename=$(basename -- "$1")
+  filename="${filename%.*}"
+  ffmpeg -i $1 -vf "fps=10,scale=320:-1:flags=lanczos,drawtext=text='$2':fontcolor=black:fontsize=24:x=(w-text_w)/2:y=h-text_h-20:box=1:boxcolor=white@0.8:boxborderw=5,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" $filename.gif
+  # ffmpeg -i $1 -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" $filename.gif
+}
+
 # Nvim
 alias nvim="TERM='' nvim"
 function v() {
