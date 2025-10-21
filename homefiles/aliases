@@ -11,6 +11,9 @@ alias tkill="tmux kill-server"
 
 alias t='sesh connect $(sesh list | fzf)'
 
+# Ansible vault decrypt
+alias avd="rg -l \"ANSIBLE_VAULT\" | fzf --preview 'echo \"Encrypted file: {}\"' | xargs -I {} ansible-vault decrypt {} --vault-password-file=./vault_password.txt"
+
 # gif from video
 function gif () {
   # extract file name from provided path
