@@ -134,6 +134,10 @@ ln -s ~/dotfiles/nvim/ ~/.config/
 mkdir -p ~/.config/ghostty
 ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
 
+# setup yazi
+mkdir -p ~/.config/yazi
+ln -s ~/dotfiles/yazi/theme.toml ~/.config/yazi/theme.toml
+
 # setup lazygit
 ln -s ~/dotfiles/templates/lazygit.yml ~/Library/Application\ Support/lazygit/config.yml
 
