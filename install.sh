@@ -134,6 +134,10 @@ ln -s ~/dotfiles/nvim/ ~/.config/
 mkdir -p ~/.config/ghostty
 ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
 
+# setup opencode
+mkdir -p ~/.config/opencode
+ln -s ~/dotfiles/opencode/opencode.json ~/.config/opencode/
+
 # setup yazi
 mkdir -p ~/.config/yazi
 ln -s ~/dotfiles/yazi/theme.toml ~/.config/yazi/theme.toml
