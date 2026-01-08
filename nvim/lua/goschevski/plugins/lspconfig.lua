@@ -10,9 +10,9 @@ return {
 		local on_attach = function(client, bufnr)
 			local opts = { noremap = true, silent = true, buffer = bufnr }
 
-			vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, opts)
-			vim.keymap.set("n", "gi", require("telescope.builtin").lsp_implementations, opts)
-			vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
+			vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts)
+			vim.keymap.set("n", "gi", ":FzfLua lsp_implementations<CR>", opts)
+			vim.keymap.set("n", "gr", ":FzfLua lsp_references<CR>", opts)
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
