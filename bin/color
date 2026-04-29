@@ -1,29 +1,177 @@
 #!/bin/bash
+#
+# Theme toggle: switch everything between dark (Catppuccin Mocha) and light (Catppuccin Latte)
+#
+# Usage:
+#   color          # toggle current theme
+#   color dark     # switch to dark
+#   color light    # switch to light
+#
 
-if [ "$1" = "dark" ]; then
-  # tmux theme
-  awk '/# --> Catppuccin \(Latte\)/ {p=NR} p&&NR-p>=1&&NR-p<=13 {gsub(/^/, "# ")} 1' ~/dotfiles/homefiles/tmux.conf > tmp && mv tmp ~/dotfiles/homefiles/tmux.conf # comment latte
-  awk '/# --> Catppuccin \(Mocha\)/ {p=NR} p&&NR-p>=1&&NR-p<=13 {gsub(/^# /, "")} 1' ~/dotfiles/homefiles/tmux.conf > tmp && mv tmp ~/dotfiles/homefiles/tmux.conf # uncomment mocha
-  # tmux <C-a>r
-  kitten @ send-text '\x01\x72'
-  # kitty theme
-  kitty +kitten themes --reload-in=all Catppuccin-Macchiato
-  # git-delta theme
-  sed -i '' 's/features = hoopoe/features = colibri/' ~/dotfiles/homefiles/gitconfig
-  # vim color-scheme
-  nvim --server ~/.cache/nvim/server.pipe --remote-send ':colorscheme catppuccin-macchiato<CR>'
+DOTFILES="$HOME/dotfiles"
+THEME_FILE="$HOME/.theme"
+
+# ---------------------------------------------------------------------------
+# Determine target mode
+# ---------------------------------------------------------------------------
+current=$(cat "$THEME_FILE" 2>/dev/null || echo "dark")
+
+if [ -n "$1" ]; then
+  target="$1"
+else
+  # toggle
+  if [ "$current" = "dark" ]; then
+    target="light"
+  else
+    target="dark"
+  fi
 fi
 
-if [ "$1" = "light" ]; then
-  # tmux theme
-  awk '/# --> Catppuccin \(Mocha\)/ {p=NR} p&&NR-p>=1&&NR-p<=13 {gsub(/^/, "# ")} 1' ~/dotfiles/homefiles/tmux.conf > tmp && mv tmp ~/dotfiles/homefiles/tmux.conf # comment mocha
-  awk '/# --> Catppuccin \(Latte\)/ {p=NR} p&&NR-p>=1&&NR-p<=13 {gsub(/^# /, "")} 1' ~/dotfiles/homefiles/tmux.conf > tmp && mv tmp ~/dotfiles/homefiles/tmux.conf # uncomment latte
-  # tmux <C-a>r
-  kitten @ send-text '\x01\x72'
-  # kitty theme
-  kitty +kitten themes --reload-in=all Catppuccin-Latte
-  # git-delta theme
-  sed -i '' 's/features = colibri/features = hoopoe/' ~/dotfiles/homefiles/gitconfig
-  # vim color-scheme
-  nvim --server ~/.cache/nvim/server.pipe --remote-send ':colorscheme catppuccin-latte<CR>'
+# Nothing to do if already on target (only for explicit dark/light calls)
+if [ "$current" = "$target" ] && [ -n "$1" ]; then
+  echo "Already on $target"
+  exit 0
 fi
+
+echo "$target" > "$THEME_FILE"
+
+# ---------------------------------------------------------------------------
+# Theme values
+# ---------------------------------------------------------------------------
+if [ "$target" = "light" ]; then
+  ghostty_theme="Catppuccin Latte"
+  nvim_colorscheme="catppuccin-latte"
+  bat_theme="Catppuccin Latte"
+  delta_from="colibri"
+  delta_to="hoopoe"
+  lazygit_from="--dark"
+  lazygit_to="--light"
+  tmux_comment="Mocha"
+  tmux_uncomment="Latte"
+  yazi_source="theme-light.toml"
+else
+  ghostty_theme="Catppuccin Mocha"
+  nvim_colorscheme="catppuccin-mocha"
+  bat_theme="Catppuccin Mocha"
+  delta_from="hoopoe"
+  delta_to="colibri"
+  lazygit_from="--light"
+  lazygit_to="--dark"
+  tmux_comment="Latte"
+  tmux_uncomment="Mocha"
+  yazi_source="theme-dark.toml"
+fi
+
+# ---------------------------------------------------------------------------
+# 1. Ghostty — edit config + trigger reload (must complete before TUI respawns)
+# ---------------------------------------------------------------------------
+ghostty_conf="$DOTFILES/templates/ghostty.conf"
+sed -i '' "s/^theme = .*/theme = $ghostty_theme/" "$ghostty_conf"
+
+# Trigger Ghostty config reload
+# Ghostty watches config files but we also force a reload via AppleScript
+# Must complete before we respawn TUI apps that detect terminal background
+osascript -e '
+  tell application "System Events"
+    if exists (process "Ghostty") then
+      tell process "Ghostty"
+        key code 15 using command down
+      end tell
+    end if
+  end tell
+' 2>/dev/null
+# Give Ghostty a moment to apply the new theme colors
+sleep 0.3
+
+# ---------------------------------------------------------------------------
+# 2. tmux — toggle color blocks + reload
+# ---------------------------------------------------------------------------
+tmux_conf="$DOTFILES/homefiles/tmux.conf"
+
+# Comment out the block we don't want (add "# " to lines that aren't already commented)
+awk -v label="$tmux_comment" '
+  $0 ~ "# --> Catppuccin \\(" label "\\)" { p=NR }
+  p && NR-p>=1 && NR-p<=13 && /^[^#]/ { $0 = "# " $0 }
+  { print }
+' "$tmux_conf" > "$tmux_conf.tmp" && mv "$tmux_conf.tmp" "$tmux_conf"
+
+# Uncomment the block we want (strip leading "# " from commented lines)
+awk -v label="$tmux_uncomment" '
+  $0 ~ "# --> Catppuccin \\(" label "\\)" { p=NR }
+  p && NR-p>=1 && NR-p<=13 { sub(/^# /, "") }
+  { print }
+' "$tmux_conf" > "$tmux_conf.tmp" && mv "$tmux_conf.tmp" "$tmux_conf"
+
+# Reload tmux config if tmux is running
+if command -v tmux &>/dev/null && tmux list-sessions &>/dev/null; then
+  tmux source-file ~/.tmux.conf 2>/dev/null
+fi
+
+# ---------------------------------------------------------------------------
+# 3. Neovim — send colorscheme to ALL running instances
+# ---------------------------------------------------------------------------
+nvim_socket_dir="/var/folders"
+find "$nvim_socket_dir" -name "nvim.*.0" -type s 2>/dev/null | while read -r sock; do
+  nvim --server "$sock" --remote-send ":colorscheme $nvim_colorscheme<CR>" 2>/dev/null &
+done
+
+# ---------------------------------------------------------------------------
+# 4. git-delta — switch theme feature
+# ---------------------------------------------------------------------------
+gitconfig="$DOTFILES/homefiles/gitconfig"
+sed -i '' "s/features = $delta_from/features = $delta_to/" "$gitconfig"
+
+# ---------------------------------------------------------------------------
+# 5. lazygit — switch delta dark/light flag
+# ---------------------------------------------------------------------------
+lazygit_conf="$DOTFILES/templates/lazygit.yml"
+sed -i '' "s/delta $lazygit_from/delta $lazygit_to/" "$lazygit_conf"
+
+# ---------------------------------------------------------------------------
+# 6. yazi — swap theme file
+# ---------------------------------------------------------------------------
+cp "$DOTFILES/yazi/$yazi_source" "$DOTFILES/yazi/theme.toml"
+
+# ---------------------------------------------------------------------------
+# 7. Restart lazygit/yazi if running in tmux windows
+# ---------------------------------------------------------------------------
+if command -v tmux &>/dev/null && tmux list-sessions &>/dev/null; then
+  # Find and restart lazygit panes using respawn-pane (handles remain-on-exit)
+  tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}' 2>/dev/null | \
+    grep -i lazygit | while read -r entry; do
+      pane=$(echo "$entry" | awk '{print $1}')
+      tmux respawn-pane -k -t "$pane" lazygit 2>/dev/null
+    done
+
+  # Find and restart yazi panes using respawn-pane
+  tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}' 2>/dev/null | \
+    grep -i yazi | while read -r entry; do
+      pane=$(echo "$entry" | awk '{print $1}')
+      tmux respawn-pane -k -t "$pane" yazi 2>/dev/null
+    done
+
+  # Set opencode theme mode via its KV store, then restart opencode panes
+  opencode_kv="$HOME/.local/state/opencode/kv.json"
+  if [ -f "$opencode_kv" ]; then
+    # Use python for reliable JSON manipulation
+    python3 -c "
+import json, sys
+with open('$opencode_kv', 'r') as f: d = json.load(f)
+d['theme_mode_lock'] = '$target'
+with open('$opencode_kv', 'w') as f: json.dump(d, f, indent=2)
+" 2>/dev/null
+  fi
+  tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}' 2>/dev/null | \
+    grep -i opencode | while read -r entry; do
+      pane=$(echo "$entry" | awk '{print $1}')
+      tmux respawn-pane -k -t "$pane" "opencode -c" 2>/dev/null
+    done
+fi
+
+# ---------------------------------------------------------------------------
+# 8. Notify
+# ---------------------------------------------------------------------------
+# Wait for background nvim sends
+wait 2>/dev/null
+
+echo "Theme switched to: $target"

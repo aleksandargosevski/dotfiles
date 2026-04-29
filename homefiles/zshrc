@@ -78,5 +78,9 @@ eval "$(starship init zsh)"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# bat
-export BAT_THEME="Catppuccin Macchiato"
+# bat (theme follows ~/.theme)
+if [[ -f ~/.theme ]] && [[ "$(cat ~/.theme)" == "light" ]]; then
+  export BAT_THEME="Catppuccin Latte"
+else
+  export BAT_THEME="Catppuccin Mocha"
+fi
