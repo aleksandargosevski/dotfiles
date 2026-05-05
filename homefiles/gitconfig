@@ -9,6 +9,7 @@
   user = goschevski
 [diff]
   tool = nvimdiff
+  algorithm = histogram
 [difftool]
   prompt = false
 [alias]
@@ -24,6 +25,7 @@
   keepBackup = false
 [push]
   default = simple
+  autoSetupRemote = true
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
@@ -32,9 +34,14 @@
 [init]
   defaultBranch = main
 [pull]
-	rebase = true
+  rebase = true
 [rebase]
   autoStash = true
+  updateRefs = true
+[branch]
+  sort = -committerdate
+[column]
+  ui = auto
 [fetch]
   prune = true
   writeCommitGraph = true
