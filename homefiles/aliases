@@ -95,17 +95,24 @@ alias mylog="nodemon server.js | grep --line-buffered 'MYLOG'"
 alias nrd="pkill node && npm run dev"
 n () {
   if [[ -f bun.lockb ]]; then
+    echo "👉 Using: bun"
     bun "$@"
   elif [[ -f pnpm-lock.yaml ]]; then
+    echo "👉 Using: pnpm"
     pnpm "$@"
   elif [[ -f yarn.lock ]]; then
+    echo "👉 Using: yarn"
     yarn "$@"
   elif [[ -f package-lock.json ]]; then
+    echo "👉 Using: npm"
     npm "$@"
   else
+    echo "👉 Using: npm (default)"
     npm "$@"
   fi
 }
+
+alias npm="n"
 
 # Docker
 alias dlc="docker ps -a"
