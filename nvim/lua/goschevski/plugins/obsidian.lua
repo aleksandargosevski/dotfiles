@@ -1,8 +1,11 @@
+local vault_path = vim.fn.expand("~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes")
+
 return {
 	"epwalsh/obsidian.nvim",
 	version = "*",
 	lazy = true,
 	ft = "markdown",
+	enabled = vim.fn.isdirectory(vault_path) == 1,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
