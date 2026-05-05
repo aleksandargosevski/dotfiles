@@ -7,8 +7,9 @@ chmod +x ~/dotfiles/bin/*
 
 # install brew packages
 brew install aleksandargosevski/tap/hx
+brew install aleksandargosevski/tap/skocko
 brew install git
-brew install sesh
+# brew install sesh
 brew install git-delta
 brew install fnm
 brew install yazi

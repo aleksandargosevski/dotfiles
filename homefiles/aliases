@@ -9,7 +9,7 @@ alias rg="rg --type-add 'vue:*.vue'"
 # Tmux
 alias tkill="tmux kill-server"
 
-alias t='sesh connect $(sesh list | fzf)'
+alias t='skocko'
 
 # Ansible vault decrypt
 alias avd="rg -l \"ANSIBLE_VAULT\" | fzf --preview 'echo \"Encrypted file: {}\"' | xargs -I {} ansible-vault decrypt {} --vault-password-file=./vault_password.txt"
