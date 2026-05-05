@@ -4,43 +4,32 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	config = function()
-		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-		local on_attach = function(client, bufnr)
-			local opts = { noremap = true, silent = true, buffer = bufnr }
+		-- Keymaps on LspAttach (replaces on_attach)
+		vim.api.nvim_create_autocmd("LspAttach", {
+			callback = function(args)
+				local opts = { noremap = true, silent = true, buffer = args.buf }
 
-			vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts)
-			vim.keymap.set("n", "gi", ":FzfLua lsp_implementations<CR>", opts)
-			vim.keymap.set("n", "gr", ":FzfLua lsp_references<CR>", opts)
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-			vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action, opts)
-			vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
-			vim.keymap.set("n", "<Leader>gs", vim.lsp.buf.signature_help, opts)
+				vim.keymap.set("n", "gd", ":FzfLua lsp_definitions<CR>", opts)
+				vim.keymap.set("n", "gi", ":FzfLua lsp_implementations<CR>", opts)
+				vim.keymap.set("n", "gr", ":FzfLua lsp_references<CR>", opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+				vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+				vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action, opts)
+				vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
+				vim.keymap.set("n", "<Leader>gs", vim.lsp.buf.signature_help, opts)
+			end,
+		})
 
-			-- if client.name == "eslint" then
-			-- 	vim.api.nvim_create_autocmd("BufWritePre", {
-			-- 		buffer = bufnr,
-			-- 		command = "EslintFixAll",
-			-- 	})
-			-- end
-		end
+		-- Apply cmp capabilities to all servers
+		vim.lsp.config("*", {
+			capabilities = cmp_nvim_lsp.default_capabilities(),
+		})
 
-		local servers = { "astro", "ts_ls", "html", "eslint", "gopls", "vue_ls", "lua_ls", "vtsls" }
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
-		for _, lsp in pairs(servers) do
-			lspconfig[lsp].setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-			})
-		end
-
-		lspconfig["lua_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
+		-- Custom settings for lua_ls
+		vim.lsp.config("lua_ls", {
 			settings = {
 				Lua = {
 					diagnostics = {
@@ -55,5 +44,8 @@ return {
 				},
 			},
 		})
+
+		-- Enable all servers
+		vim.lsp.enable({ "astro", "ts_ls", "html", "eslint", "gopls", "vue_ls", "lua_ls", "vtsls" })
 	end,
 }
