@@ -1,27 +1,6 @@
 source ~/dotfiles/homefiles/aliases
 source ~/Google\ Drive/My\ Drive/dotprivate/private
 
-# FZF
-# CTRL-/ to toggle small preview window to see the full command
-# CTRL-Y to copy the command into clipboard using pbcopy
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS="
---reverse
---no-info
---pointer=' ' \
---marker=' ' \
---ansi \
---color='16,bg+:-1,gutter:-1,prompt:5,pointer:5,marker:6,border:4,label:4,header:italic'"
-export FZF_TMUX_OPTS="-p 55%,60%"
-export FZF_CTRL_R_OPTS="
-  --border-label=' history '
-  --prompt='  '
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
-  --color header:italic
-  --header 'CTRL-Y copy command , CTRL-/ toggle preview'"
-
 # Node version manager fnm
 eval "$(fnm env --use-on-cd)"
 
@@ -84,3 +63,5 @@ if [[ -f ~/.theme ]] && [[ "$(cat ~/.theme)" == "light" ]]; then
 else
   export BAT_THEME="Catppuccin Mocha"
 fi
+
+eval "$(hx init zsh)"

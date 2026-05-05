@@ -6,6 +6,7 @@ chmod +x ~/dotfiles/bin/*
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # install brew packages
+brew install aleksandargosevski/tap/hx
 brew install git
 brew install sesh
 brew install git-delta
