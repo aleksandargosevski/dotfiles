@@ -14,6 +14,7 @@
 
 import { complete, type Model, type Api, type UserMessage } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, ModelRegistry } from "@earendil-works/pi-coding-agent";
+import { suppressDoneNotification } from "./noti.js";
 import { BorderedLoader } from "@earendil-works/pi-coding-agent";
 import {
   type Component,
@@ -627,6 +628,9 @@ async function runAnswerFlow(
     ctx.ui.notify("Cancelled", "info");
     return;
   }
+
+  // User just interacted — suppress the "done" notification for the follow-up turn
+  suppressDoneNotification();
 
   pi.sendMessage(
     {
