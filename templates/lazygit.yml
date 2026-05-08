@@ -11,6 +11,7 @@ gui:
       - black
     selectedRangeBgColor:
       - black
+
 git:
   branchLogCmd: "git log --graph --color=always --date=relative --format='%C(#e3c78a)%h%C(#ff5454)%d%C(reset) - %C(#36c692)(%ad)%C(reset) %s %C(#80a0ff){%an}%C(reset)' {{branchName}} --"
   paging:
@@ -21,3 +22,15 @@ keybinding:
   commits:
     moveDownCommit: '<c-n>' # move commit down one
     moveUpCommit: '<c-p>' # move commit up one
+
+customCommands:
+  - key: 'E'
+    context: 'files'
+    prompts:
+      - type: 'input'
+        title: '~/Desktop/{name}.patch'
+        key: 'PatchName'
+        initialValue: 'staged-changes'
+    command: "git diff --cached > ~/Desktop/{{.Form.PatchName}}.patch && echo 'File created at: ~/Desktop/{{.Form.PatchName}}.patch'"
+    loadingText: 'Creating patch from staged changes'
+    output: popup
