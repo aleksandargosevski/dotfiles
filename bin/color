@@ -133,7 +133,36 @@ sed -i '' "s/delta $lazygit_from/delta $lazygit_to/" "$lazygit_conf"
 cp "$DOTFILES/yazi/$yazi_source" "$DOTFILES/yazi/theme.toml"
 
 # ---------------------------------------------------------------------------
-# 7. Restart lazygit/yazi if running in tmux windows
+# 7. Pi — update persisted theme setting
+# ---------------------------------------------------------------------------
+pi_settings="$HOME/.pi/agent/settings.json"
+if [ -f "$pi_settings" ]; then
+  if ! python3 - "$pi_settings" "$target" <<'PY'
+import json
+import os
+import sys
+
+path, target = sys.argv[1], sys.argv[2]
+
+with open(path, "r", encoding="utf-8") as f:
+    settings = json.load(f)
+
+settings["theme"] = target
+
+tmp_path = f"{path}.tmp"
+with open(tmp_path, "w", encoding="utf-8") as f:
+    json.dump(settings, f, indent=2)
+    f.write("\n")
+
+os.replace(tmp_path, path)
+PY
+  then
+    echo "Warning: failed to update Pi theme in $pi_settings" >&2
+  fi
+fi
+
+# ---------------------------------------------------------------------------
+# 8. Restart/reload running TUIs in tmux windows
 # ---------------------------------------------------------------------------
 if command -v tmux &>/dev/null && tmux list-sessions &>/dev/null; then
   # Find and restart lazygit panes using respawn-pane (handles remain-on-exit)
@@ -150,26 +179,17 @@ if command -v tmux &>/dev/null && tmux list-sessions &>/dev/null; then
       tmux respawn-pane -k -t "$pane" yazi 2>/dev/null
     done
 
-  # Set opencode theme mode via its KV store, then restart opencode panes
-  opencode_kv="$HOME/.local/state/opencode/kv.json"
-  if [ -f "$opencode_kv" ]; then
-    # Use python for reliable JSON manipulation
-    python3 -c "
-import json, sys
-with open('$opencode_kv', 'r') as f: d = json.load(f)
-d['theme_mode_lock'] = '$target'
-with open('$opencode_kv', 'w') as f: json.dump(d, f, indent=2)
-" 2>/dev/null
-  fi
-  tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}' 2>/dev/null | \
-    grep -i opencode | while read -r entry; do
+  # Ask running Pi panes to reload settings/theme without respawning the session
+  tmux list-panes -a -F '#{pane_id} #{pane_current_command} #{pane_start_command}' 2>/dev/null | \
+    grep -Ei '(^|[[:space:]/])pi([[:space:]]|$)|pi-coding-agent|@earendil-works/pi' | while read -r entry; do
       pane=$(echo "$entry" | awk '{print $1}')
-      tmux respawn-pane -k -t "$pane" "opencode -c" 2>/dev/null
+      tmux send-keys -t "$pane" C-u "/reload" Enter 2>/dev/null
     done
+
 fi
 
 # ---------------------------------------------------------------------------
-# 8. Notify
+# 9. Notify
 # ---------------------------------------------------------------------------
 # Wait for background nvim sends
 wait 2>/dev/null

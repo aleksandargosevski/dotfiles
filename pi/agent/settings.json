@@ -1,0 +1,8 @@
+{
+  "lastChangelogVersion": "0.74.0",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-5.5",
+  "theme": "dark",
+  "hideThinkingBlock": false,
+  "defaultThinkingLevel": "medium"
+}

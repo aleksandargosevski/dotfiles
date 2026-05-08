@@ -136,9 +136,9 @@ ln -s ~/dotfiles/nvim/ ~/.config/
 mkdir -p ~/.config/ghostty
 ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
 
-# setup opencode
-mkdir -p ~/.config/opencode
-ln -s ~/dotfiles/opencode/opencode.json ~/.config/opencode/
+# setup pi
+curl -fsSL https://pi.dev/install.sh | sh
+ln -s ~/dotfiles/pi ~/.pi
 
 # setup yazi
 mkdir -p ~/.config/yazi

@@ -1,1 +1,3 @@
 nvim/lazy-lock.json
+pi/agent/sessions
+pi/agent/auth.json
