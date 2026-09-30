@@ -128,3 +128,5 @@ keymap.set("o", "al", ":normal val<CR>", opts)
 
 -- open last search in quickfix
 keymap.set("n", ",", ":vimgrep // % | copen<CR>", opts)
+
+vim.keymap.set("n", "<leader>e", function() require("arhiva").open() end, { desc = "arhiva" })
