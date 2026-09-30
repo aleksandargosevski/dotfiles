@@ -30,6 +30,7 @@ brew install yt-dlp
 brew install ffmpeg
 brew install vim
 brew install neovim
+brew install tree-sitter-cli
 brew install jq
 brew install awscli
 brew install lsd
