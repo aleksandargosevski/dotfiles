@@ -139,11 +139,9 @@ ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
 
 # setup opencode
 mkdir -p ~/.config/opencode                                                                ▐
-ln -s ~/dotfiles/opencode ~/.config/opencode
-
-# setup pi
-curl -fsSL https://pi.dev/install.sh | sh
-ln -s ~/dotfiles/pi ~/.pi
+ln -s ~/dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md
+ln -s ~/dotfiles/opencode/cli.json ~/.config/opencode/cli.json
+ln -s ~/dotfiles/opencode/opencode.json ~/.config/opencode/opencode.json
 
 # setup yazi
 mkdir -p ~/.config/yazi
