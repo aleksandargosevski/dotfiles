@@ -5,7 +5,7 @@
     "mode": "dark"
   },
   "tabs": {
-    "mode": "auto"
+    "mode": "off"
   },
   "diffs": {
     "wrap": "word"
