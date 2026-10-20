@@ -64,4 +64,7 @@ else
   export BAT_THEME="Catppuccin Mocha"
 fi
 
+# Ghostty notifications through tmux
+export OPENTUI_NOTIFICATION_PROTOCOL=osc777
+
 eval "$(hx init zsh)"
