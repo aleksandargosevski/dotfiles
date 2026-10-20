@@ -8,16 +8,18 @@ chmod +x ~/dotfiles/bin/*
 # install brew packages
 brew install aleksandargosevski/tap/hx
 brew install aleksandargosevski/tap/skocko
+brew install aleksandargosevski/tap/arhiva
+brew install aleksandargosevski/tap/pismo
 brew install git
 # brew install sesh
 brew install git-delta
 brew install fnm
-brew install yazi
+# brew install yazi
 brew install fd
 brew install ripgrep
 brew install fzf
 # install additional fzf features
-$(brew --prefix)/opt/fzf/install
+# $(brew --prefix)/opt/fzf/install
 brew install gnu-sed
 brew install node
 brew install go
