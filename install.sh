@@ -140,10 +140,11 @@ mkdir -p ~/.config/ghostty
 ln -s ~/dotfiles/templates/ghostty.conf ~/.config/ghostty/config
 
 # setup opencode
-mkdir -p ~/.config/opencode                                                                ▐
+mkdir -p ~/.config/opencode
 ln -s ~/dotfiles/opencode/AGENTS.md ~/.config/opencode/AGENTS.md
 ln -s ~/dotfiles/opencode/cli.json ~/.config/opencode/cli.json
 ln -s ~/dotfiles/opencode/opencode.json ~/.config/opencode/opencode.json
+ln -s ~/dotfiles/opencode/plugins ~/.config/opencode/plugins
 
 # setup yazi
 mkdir -p ~/.config/yazi

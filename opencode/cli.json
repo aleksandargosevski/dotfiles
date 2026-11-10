@@ -13,7 +13,8 @@
   "session": {
     "sidebar": "auto",
     "scrollbar": true,
-    "thinking": "show"
+    "thinking": "show",
+    "verbosity": "low"
   },
   "animations": true,
   "attention": {
@@ -21,5 +22,6 @@
     "sound": true,
     "volume": 0.5
   },
-  "mini": { "tools": "hide", "shell_output": "hide" }
+  "mini": { "tools": "hide", "shell_output": "hide" },
+  "plugins": ["-opencode.notifications"]
 }
