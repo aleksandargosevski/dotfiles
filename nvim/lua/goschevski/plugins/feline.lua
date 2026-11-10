@@ -147,7 +147,7 @@ return {
 						provider = function()
 							local clients = {}
 
-							for _, client in pairs(vim.lsp.get_active_clients()) do
+							for _, client in pairs(vim.lsp.get_clients()) do
 								if client.name ~= "null-ls" then
 									clients[#clients + 1] = client.name
 								end

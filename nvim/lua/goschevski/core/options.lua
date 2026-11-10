@@ -45,12 +45,15 @@ opt.splitbelow = true
 -- disable inline diagnostics
 vim.diagnostic.config({
 	virtual_text = false,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "◉",
+			[vim.diagnostic.severity.HINT] = "",
+			[vim.diagnostic.severity.INFO] = " ",
+		},
+	},
 })
-local signs = { Error = "", Warning = "◉", Hint = "", Information = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {

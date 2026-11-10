@@ -45,7 +45,26 @@ return {
 			},
 		})
 
+		vim.lsp.config("vtsls", {
+			settings = {
+				vtsls = {
+					tsserver = {
+						globalPlugins = {
+							{
+								name = "@vue/typescript-plugin",
+								location = vim.fn.stdpath("data")
+									.. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+								languages = { "vue" },
+								configNamespace = "typescript",
+							},
+						},
+					},
+				},
+			},
+			filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+		})
+
 		-- Enable all servers
-		vim.lsp.enable({ "astro", "ts_ls", "html", "eslint", "gopls", "vue_ls", "lua_ls", "vtsls" })
+		vim.lsp.enable({ "astro", "html", "eslint", "gopls", "vue_ls", "lua_ls", "vtsls" })
 	end,
 }

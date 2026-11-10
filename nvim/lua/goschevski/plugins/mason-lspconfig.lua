@@ -3,7 +3,7 @@ return {
 	opts = {
 		ensure_installed = {
 			"astro",
-			"ts_ls",
+			"vtsls",
 			"html",
 			"eslint",
 			"gopls",
